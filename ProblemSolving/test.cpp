@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n;
+	cin >> n;
+	vector<pair<int, int>> arr;
+	for (int i = 0; i < n; i++) {
+		int a, b;
+		cin >> a >> b;
+		arr.push_back({a, 1});
+		arr.push_back({b + 1, -1});
+	}
+	sort(arr.begin(), arr.end());
+
+	cout << "Starts here:\n";
+	for(auto &it: arr){
+        cout <<it.first << ' ' << it.second << endl;
+	}
+	cout << "Ends here!\n";
+
+	int ans = 0, sum = 0;
+	for (auto &x: arr) {
+		sum += x.second;
+		ans = max(ans, sum);
+	}
+	cout << ans << "\n";
+	return 0;
+}

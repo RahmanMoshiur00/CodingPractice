@@ -1,0 +1,134 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int intl;
+typedef unsigned long long intu;
+#define int           long long
+
+#define sfi(x)        scanf("%lld", &x)
+#define sfi2(x, y)    sfi(x) , sfi(y)
+#define sfi3(x, y, z) sfi(x) , sfi(y) , sfi(z)
+#define sfc(x)        scanf(" %c", &x)
+#define sfs(x)        scanf(" %s", x)
+#define sfsn(x)       scanf(" %[^\n]s", x)
+
+#define pfi(x)        printf("%lld", (intl)x)
+#define pfin(x)       printf("%lld", (intl)x), printf("\n")
+#define pfis(x)       printf("%lld", (intl)x), printf(" ")
+#define pfc(x)        printf("%c", x)
+#define pfs(x)        printf("%s", x)
+#define pfsn(x)       printf("%s", x), printf("\n")
+#define spc           printf(" ")
+#define nwl           printf("\n")
+#define endl          '\n'
+#define sp            ' '
+
+#define watch(x)      cout<<"::debug::   "<< #x <<" : "<<x<<endl
+#define watchi(x, i)  cout<<"::debug::   "<< #x <<"-> ["<<i<<"]"<<" : "<<x<<endl
+
+#define INPUT         freopen("input.txt","r",stdin);
+#define OUTPUT        freopen("output.txt","w",stdout);
+#define FastRead      ios::sync_with_stdio(false), cin.tie(0);
+
+#define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
+#define repit(it, x)  for(__typeof((x).begin()) it = (x).begin(); it != (x).end(); ++it)
+#define perit(it, x)  for(__typeof((x).rbegin()) it = (x).rbegin(); it != (x).rend(); ++it)
+#define rep(i, begin, end) for(int i = (begin), ed = (end); i < (ed); ++i)
+#define per(i, end, begin) for(int i = (end)-1, bg = (begin); i >= (bg); --i)
+
+#define setval(a, v)  for(int i = 0, sz = (sizeof(a)/sizeof(*a)); i<sz; i++){ a[i] = v; }
+#define ZERO(a)       memset(a, 0, sizeof(a))
+#define MINUS(a)      memset(a, 0xff, sizeof(a))
+
+#define all(a)        a.begin(), a.end()
+#define min3(x, y, z) min(x,min(y,z))
+#define max3(x, y, z) max(x,max(y,z))
+#define INF           1000000007
+#define debug         if( 0 )
+
+#define mxn           100010
+
+bool cmp(string& a, string& b)
+{
+    int l1 = a.size(), l2 = b.size();
+    int l = min(l1, l2);
+
+    rep (i, 0 , l) {
+        if(a[i] == b[i]) continue;
+
+        if(isupper(a[i])){
+            if(isupper(b[i])) return a[i] < b[i];
+            else{
+                char ch = b[i] - 32;
+                return a[i] <= ch;
+            }
+        }
+        else{
+            if(isupper(b[i])){
+                char ch = a[i] - 32;
+                return ch < b[i];
+            }
+            else return a[i] < b[i];
+        }
+    }
+
+    return (l1 < l2);
+}
+
+void solve(int tc)
+{
+    int n; cin>>n;
+
+    string s;
+    vector<string> A, B, C, D;
+
+    rep (i, 0, n) {
+        cin>>s;
+        if(s[0]=='A') A.push_back(s);
+        else if(s[0]=='B') B.push_back(s);
+        else if(s[0]=='C') C.push_back(s);
+        else if(s[0]=='D') D.push_back(s);
+    }
+
+    sort(all(A), cmp);
+    sort(all(B), cmp);
+    sort(all(C), cmp);
+    sort(all(D), cmp);
+
+    int aat = 0, bat = 0, cat = 0, dat = 0, asz = A.size(), bsz = B.size(), csz = C.size(), dsz = D.size();
+
+    int q; cin>>q; getline(cin, s);
+    while(q--){
+        getline(cin, s);
+
+        if(s[0]=='A'){
+            if(aat == asz) cout<<"Already Mastered"<<endl;
+            else cout<<A[aat++]<<endl;
+        }
+        else if(s[0]=='B'){
+            if(bat == bsz) cout<<"Already Mastered"<<endl;
+            else cout<<B[bat++]<<endl;
+        }
+        else if(s[0]=='C'){
+            if(cat == csz) cout<<"Already Mastered"<<endl;
+            else cout<<C[cat++]<<endl;
+        }
+        else if(s[0]=='D'){
+            if(dat == dsz) cout<<"Already Mastered"<<endl;
+            else cout<<D[dat++]<<endl;
+        }
+    }
+
+    A.clear(), B.clear(), C.clear(), D.clear();
+}
+
+int32_t main()
+{
+    FastRead
+    //INPUT //OUTPUT
+
+    //solve(1);
+    int tc; cin>>tc; rep(t, 1, tc+1) solve(t);
+
+    return 0;
+}
+

@@ -1,0 +1,99 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int intl;
+typedef unsigned long long intu;
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/detail/standard_policies.hpp>
+using namespace __gnu_pbds;
+
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+
+#define sfi(x)        scanf("%d", &x)
+#define sfi2(x, y)    sfi(x) , sfi(y)
+#define sfi3(x, y, z) sfi(x) , sfi(y) , sfi(z)
+#define sfc(x)        scanf(" %c", &x)
+#define sfs(x)        scanf(" %s", x)
+#define sfsn(x)       scanf(" %[^\n]s", x)
+
+#define pfi(x)        printf("%lld", (intl)x)
+#define pfin(x)       printf("%lld", (intl)x), printf("\n")
+#define pfis(x)       printf("%lld", (intl)x), printf(" ")
+#define pfc(x)        printf("%c", x)
+#define pfs(x)        printf("%s", x)
+#define pfsn(x)       printf("%s", x), printf("\n")
+#define spc           printf(" ")
+#define nwl           printf("\n")
+#define endl          '\n'
+#define sp            ' '
+
+#define watch(x)      cout<<"::debug::   "<< #x <<" : "<<x<<endl
+#define watchi(x, i)  cout<<"::debug::   "<< #x <<"-> ["<<i<<"]"<<" : "<<x<<endl
+
+#define INPUT         freopen("input.txt","r",stdin);
+#define OUTPUT        freopen("output.txt","w",stdout);
+#define FastRead      ios::sync_with_stdio(false), cin.tie(0);
+
+#define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
+#define repit(it, x)  for(__typeof((x).begin()) it = (x).begin(); it != (x).end(); ++it)
+#define perit(it, x)  for(__typeof((x).rbegin()) it = (x).rbegin(); it != (x).rend(); ++it)
+#define rep(i, begin, end) for(int i = (begin), ed = (end); i < (ed); ++i)
+#define per(i, end, begin) for(int i = (end)-1, bg = (begin); i >= (bg); --i)
+
+#define setval(a, v)  for(int i = 0, sz = (sizeof(a)/sizeof(*a)); i<sz; i++){ a[i] = v; }
+#define ZERO(a)       memset(a, 0, sizeof(a))
+#define MINUS(a)      memset(a, 0xff, sizeof(a))
+
+#define all(a)        a.begin(), a.end()
+#define min3(x, y, z) min(x,min(y,z))
+#define max3(x, y, z) max(x,max(y,z))
+#define INF           1000000007
+#define mod           1000000007
+#define debug         if( 1 )
+
+#define mxn           100010
+
+
+void solve(int tc)
+{
+    int n; sfi(n);
+    int arr[n], small[n], great[n];
+
+    rep(i, 0, n) sfi(arr[i]);
+
+    ordered_set s;
+    ordered_set g;
+
+    rep(i, 0, n){
+        g.insert(arr[i]);
+        great[i] = int(g.size()) - g.order_of_key(arr[i]) - 1;
+    }
+
+    per(i, n, 0){
+        s.insert(arr[i]);
+        small[i] = s.order_of_key(arr[i]);
+    }
+
+    debug{
+        rep(i, 0, n) cout<<i<<" : "<<great[i]<<sp<<small[i]<<endl;
+    }
+
+    int ans = 0;
+
+    rep(i, 0, n) ans = (ans + (small[i] * great[i])%mod ) % mod;
+
+    pfs("Case #"), pfi(tc), pfs(": "), pfin(ans);
+}
+
+int32_t main()
+{
+    //INPUT //OUTPUT
+    //FastRead
+
+    //solve(1);
+    int tc; cin>>tc; rep(t, 1, tc+1) solve(t);
+
+    return 0;
+}
+
