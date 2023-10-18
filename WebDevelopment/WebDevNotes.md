@@ -4,12 +4,58 @@
 * HTML tags, elements, boilerplate
 
 ## CSS
-Types of invoking CSS files:  
-* Inline
+### Types of invoking CSS files:  
+* Inline  
+```html
+<h1 style="color: blue"> ... </h1>
+```
 * Internal
+```html
+<head>
+    <style>
+        h1{
+            color: red;
+        }
+    </style>
+</head>
+<! Note: style can be added anywhere in a html file>
+```
 * External  
-  
-Types of CSS selectors:  
-* Element Selector: h1{ color: red; }  
-* Class Selector: <h1 class="new_header"> ==> .new_header{ color: yellow; }  
-* Attribute Selector: <h1 id="new_id"> ==> #new_id{ color: green; }
+```html
+<!html file>
+<head>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<!CSS file: style.css>
+body{
+  text-align: center;
+}
+```
+
+### Types of CSS selectors:  
+* Element Selector: 
+```html
+h1{ color: red; }
+```  
+* Class Selector:  
+```html
+1.
+<h1 class="new_header">
+<!CSS>
+.new_header{ color: yellow; }
+
+2.
+<h1 id="new_id">
+<!CSS>
+#new_id{ color: green; }
+```  
+* Attribute Selector:
+```html
+<li class="note" value="4">
+<!CSS>
+li[value="4"] {
+  color: blue;
+}
+```
+
