@@ -30,5 +30,6 @@ li[value="4"] {
 /* TODO 5: Set all elements to have "font-family: sans-serif;" */
 * {
   text-align: center;
+  font-family: sans-serif;
 }
 
