@@ -59,3 +59,9 @@ li[value="4"] {
 }
 ```
 
+### Font Size
+* 1px = 1/96th inch  
+* 1pt = 1/72th inch  
+* 1em = 100% of parent  
+* 1rem = 100 of root
+
