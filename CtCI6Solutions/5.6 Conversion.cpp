@@ -60,7 +60,7 @@ void solve(int tc)
     int a, b;
     cin >> a >> b;
 
-    //these solutions works for (a,b) >= 0 condition
+    //these solutions works for (a,b) >= 0
     MySolution(a, b);
     CtCISolution(a, b);
 }
