@@ -109,4 +109,14 @@ h1#title.big.heading{ } //CSS, selects exactly matched html element(s)
 <h1 id="title" class="big heading">Hello World!</h1>
 ```
 
+### CSS Positioning
+[How CSS Position property works?](https://www.freecodecamp.org/news/css-position-property-explained/)
+1. static (default)
+2. relative [parent]
+3. absolute [child]
+4. fixed [fixed to the display position]
+5. sticky []  
+
+
+
 
