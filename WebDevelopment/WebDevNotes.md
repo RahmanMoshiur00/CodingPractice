@@ -115,7 +115,7 @@ h1#title.big.heading{ } //CSS, selects exactly matched html element(s)
 2. relative [parent]
 3. absolute [child]
 4. fixed [fixed to the display position]
-5. sticky []  
+5. sticky 
 
 
 
