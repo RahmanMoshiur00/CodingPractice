@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NASA Picture of the Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Titan+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  </head>
+
+  <body>
+    <p class="user"><%= message.title%></p>
+    <div class="card">
+      <img src="<%= message.url %>" alt="<%= message.title %>" />
+    </div>
+    <div class="explanation">
+        <p><%= message.explanation %></p>
+    </div>
+  </body>
+</html>
