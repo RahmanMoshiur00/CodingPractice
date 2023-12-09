@@ -14,7 +14,17 @@
   <body>
     <p class="user"><%= message.title%></p>
     <div class="card">
-      <img src="<%= message.url %>" alt="<%= message.title %>" />
+      <% 
+      console.log("In ejs file -> "); 
+      console.log(message);
+      %>
+      <% if (message.contentType === "image") { %>
+        <img src="<%= message.url %>" alt="<%= message.title %>" />
+      <% } else if (message.contentType === "video") { %>
+        <iframe width="420" height="315" src="<%= message.url %>"> </iframe>
+      <% } else {%>
+        Nothing to show.
+      <% } %>
     </div>
     <div class="explanation">
         <p><%= message.explanation %></p>
