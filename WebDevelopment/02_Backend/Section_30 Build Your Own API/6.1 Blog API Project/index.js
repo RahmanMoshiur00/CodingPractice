@@ -41,14 +41,62 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Write your code here//
 
 //CHALLENGE 1: GET All posts
+app.get("/posts", (req, res) => {
+  res.json(posts);
+});
 
 //CHALLENGE 2: GET a specific post by id
+app.get("/posts/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const postIndex = posts.findIndex((post) => post.id === id);
+  if (postIndex > -1) {
+    res.json(posts[postIndex]);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 //CHALLENGE 3: POST a new post
+app.post("/posts", (req, res) => {
+  console.log(req.body);
+  const post = {
+    id: posts.length + 1,
+    title: req.body.title,
+    content: req.body.content,
+    author: req.body.author,
+    date: new Date().toJSON(),
+  };
+  posts.push(post);
+  res.json(posts[posts.length - 1]);
+});
 
 //CHALLENGE 4: PATCH a post when you just want to update one parameter
+app.patch("/posts/:id", (req, res) => {
+  console.log("patch: ");
+  console.log(req.body);
+
+  const id = parseInt(req.params.id);
+  const postIndex = posts.findIndex((post) => post.id === id);
+  if (postIndex > -1) {
+    if (req.body.title) posts[postIndex].title = req.body.title;
+    if (req.body.content) posts[postIndex].content = req.body.content;
+    if (req.body.author) posts[postIndex].author = req.body.author;
+    posts[postIndex].date = new Date().toJSON();
+  }
+  res.json(posts[postIndex]);
+});
 
 //CHALLENGE 5: DELETE a specific post by providing the post id.
+app.delete("/posts/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const postIndex = posts.findIndex((post) => post.id === id);
+  if (postIndex > -1) {
+    posts.splice(postIndex, 1);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 app.listen(port, () => {
   console.log(`API is running at http://localhost:${port}`);

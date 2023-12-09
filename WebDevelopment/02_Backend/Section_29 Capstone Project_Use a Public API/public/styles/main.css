@@ -35,7 +35,8 @@ h1 {
   text-align: center;
   display: flex;
   font-size: 1.5em;
-  color: rgb(88 199 250 / 0%);
+  /* color: rgb(88 199 250 / 0%); */
+  color: white;
   font-family: "Gloria Hallelujah", cursive;
 }
 
@@ -121,6 +122,6 @@ a {
 
 .explanation{
   color: white;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Gloria Hallelujah", cursive;
   margin: 1.5rem 3rem 1.5rem 3rem;
 }
