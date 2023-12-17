@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import pg from 'pg';
-import md5 from 'md5';
+import bcrypt from 'bcrypt';
 
 const PORT = 3000;
 const app = express();
@@ -58,23 +58,30 @@ app.get("/register", (req, res) => {
 });
 
 async function insertIntoDB (userName, password) {
+    let isInsertionSuccessful = false;
     try{
-        // Encrypt
-        let secretKey = process.env.SECRET_KEY;
-        let hashValue = md5(password);
+        let saltRounds = parseInt(process.env.SALT_ROUND);
+
+        //https://stackoverflow.com/questions/48799894/trying-to-hash-a-password-using-bcrypt-inside-an-async-function
+        const hashedPassword = await new Promise((resolve, reject) => {
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+              if (err) reject(err);
+              resolve(hash);
+            });
+        });
+
         let response = await db.query(
             `INSERT INTO users (username, password)
-            VALUES ('${userName}', '${hashValue}') RETURNING *;`
+            VALUES ('${userName}', '${hashedPassword}') RETURNING *;`
         );
+
         if(response.rowCount > 0) {
-            return true;
-        } else {
-            return false;
+            isInsertionSuccessful = true;
         }
     } catch (err) {
         console.error(err);
-        return false;
     }
+    return isInsertionSuccessful;
 }   
 
 app.post("/register", async (req, res) => {
@@ -85,7 +92,9 @@ app.post("/register", async (req, res) => {
     
         if(userName && password) {
             // add username & password into db
-            if(await insertIntoDB(userName, password) === true){
+            let isInserted = await insertIntoDB(userName, password);
+            console.log("isInserted = " + isInserted);
+            if(isInserted === true){
                 isRegistrationSuccessful = true;
             }
         }
@@ -93,7 +102,7 @@ app.post("/register", async (req, res) => {
         console.error(err);
     }
 
-    if(isRegistrationSuccessful){
+    if(isRegistrationSuccessful === true){
         console.log("Successful registration.");
         res.render("secrets.ejs", { signedIn: true });
     } else{
@@ -109,8 +118,15 @@ async function isValidUser(userName, password) {
         let response = await db.query(
             `SELECT * FROM users WHERE username = '${userName}';`);
         if(response.rowCount > 0) {
-            let convertedPassword = md5(password);
-            if(convertedPassword == response.rows[0].password) {
+            ////https://stackoverflow.com/questions/48799894/trying-to-hash-a-password-using-bcrypt-inside-an-async-function
+            let isMatched = await new Promise((resolve, reject) => {
+                bcrypt.compare(password, response.rows[0].password, function(err, result) {
+                  if (err) reject(err)
+                  resolve(result)
+                });
+            });
+
+            if(isMatched === true){
                 ret = true;
             }
         } 
