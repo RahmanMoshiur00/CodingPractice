@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import session from 'express-session';
 import passport from 'passport';
 import passportLocal from 'passport-local';
+import passportGoogle from 'passport-google-oauth20';
 import flash from 'express-flash';
 
 const PORT = process.env.PORT || 3000;
@@ -48,6 +49,35 @@ passport.use(new passportLocal.Strategy( { usernameField: "username", passwordFi
         return done(null, false, {message: 'Error occured in local-strategy.'});
     }
 } ));
+
+// Serialize and deserialize methods tell Passport how to store the user object
+passport.use(new passportGoogle.Strategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    }, 
+    async function(accessToken, refreshToken, profile, done){
+        // User has logged in via Google OAuth2
+        // We will create a new user or log in an existing one
+        console.log("GoogleStartegy => google profile");
+        console.log(profile);
+
+        let email = profile.emails[0].value;
+        let googleId = profile.id;
+        console.log(`email = ${email}, googleId = ${googleId}`);
+
+        // Checking if this email already exists in our DB
+        let queryResult = await db.query(`SELECT * FROM users WHERE username='${email}';`);
+        if(queryResult.rowCount > 0){ 
+            // User already exists, no need to insert into db
+        } else{
+            // Otherwise, make a new account for the user
+            queryResult = await db.query(`INSERT INTO users (username, password)
+            VALUES ('${email}', '${googleId}') RETURNING *;`);
+        }
+        return done(null, {id: queryResult.rows[0].id, username: queryResult.rows[0].username});
+    }
+));
 
 passport.serializeUser( (user, done) => {
     console.log(`passport.serializeUser() => user: `); console.log(user);
@@ -130,6 +160,17 @@ app.get("/secret", proceedIfAuthenticated, (req, res) => {
     console.log(`/secrets => `); console.log(req.user);
     res.render("secrets.ejs", {username: req.user.username});
 });
+
+app.get("/auth/google", 
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get("/auth/google/callback", 
+  passport.authenticate('google', { failureRedirect: "/login?error=" + encodeURIComponent("login_failed") }),
+  function(req, res) {
+    // Successful authentication, redirect to secret page.
+    res.redirect("/secret");
+  });
 
 function proceedIfAuthenticated(req, res, next){
     if(req.isAuthenticated()){
